@@ -18,7 +18,7 @@ class HttpServer extends Worker
     {
         $this->name  = $httpConfig['name'];
         $this->count = $httpConfig['count'];
-        $socket_name = $httpConfig['socket_type'] . '://' . $httpConfig['host'] . ':' . $httpConfig['port'];
+        $socket_name = $httpConfig['socketType'] . '://' . $httpConfig['host'] . ':' . $httpConfig['port'];
 
         parent::__construct($socket_name);
     }

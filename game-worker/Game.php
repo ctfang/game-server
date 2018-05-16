@@ -9,6 +9,7 @@
 namespace GameWorker;
 
 
+use Dotenv\Dotenv;
 use GameWorker\Support\Config;
 use Workerman\Worker;
 
@@ -35,11 +36,16 @@ class Game
     {
         self::$container = $this;
         self::$container->rootPath = $rootPath;
+        if( file_exists($rootPath.'/.env') ){
+            $dotenv = new Dotenv($rootPath);
+            $dotenv->load();
+        }
     }
 
-    public function loadServerConfig($file)
+    // 加载配置
+    public function loadServerConfig($dir)
     {
-        self::$container->config = new Config($file);
+        self::$container->config = new Config($dir);
     }
 
     /**
@@ -65,11 +71,21 @@ class Game
         }
     }
 
+    /**
+     * 启动
+     */
     public function run()
     {
         Worker::runAll();
     }
 
+    /**
+     * 读取配置
+     *
+     * @param $key
+     * @param null $default
+     * @return mixed|null
+     */
     public static function config($key, $default = null)
     {
         return self::$container->config->get($key, $default);

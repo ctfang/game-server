@@ -8,39 +8,53 @@
 
 namespace Apps\Events;
 
+use GameWorker\Support\WorkerEvent;
 use \GatewayWorker\Lib\Gateway;
 
-class BusinessEvent
+class BusinessEvent extends WorkerEvent
 {
     /**
-     * 当客户端连接时触发
-     * 如果业务不需此回调可以删除onConnect
+     * 连接事件
      *
-     * @param int $client_id 连接id
+     * @param string $clientId 客户端连接id
+     * @return mixed
      */
-    public static function onConnect($client_id) {
-        // 向当前client_id发送数据
-        Gateway::sendToClient($client_id, "Hello $client_id\n");
-        // 向所有人发送
-        Gateway::sendToAll("$client_id login\n");
+    public static function onConnect(string $clientId)
+    {
+        // TODO: Implement onConnect() method.
     }
 
     /**
-     * 当客户端发来消息时触发
-     * @param int $client_id 连接id
-     * @param mixed $message 具体消息
+     * 接收信息
+     *
+     * @param string $clientId
+     * @param string|array $message
+     * @return mixed
+     * @throws \Exception
      */
-    public static function onMessage($client_id, $message) {
-        // 向所有人发送
-        Gateway::sendToAll("$client_id said $message");
+    public static function onMessage(string $clientId, $message)
+    {
+        $test = time();
+
+        $test++;
+        $test++;
+        $test++;
+        $test++;
+        $test++;
+        $test++;
+
+
+        Gateway::sendToAll("{$clientId} said $message");
     }
 
     /**
-     * 当用户断开连接时触发
-     * @param int $client_id 连接id
+     * 客户端断开触发
+     *
+     * @param string $clientId
+     * @return mixed
      */
-    public static function onClose($client_id) {
-        // 向所有人发送
-        GateWay::sendToAll("$client_id logout");
+    public static function onClose(string $clientId)
+    {
+        // TODO: Implement onClose() method.
     }
 }

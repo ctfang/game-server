@@ -16,7 +16,7 @@ class RegisterServer extends Register
     public function __construct($config)
     {
         $this->name  = $config['name'];
-        $socket_name = $config['socket_type'] . '://' . $config['host'] . ':' . $config['port'];
+        $socket_name = $config['socketType'] . '://' . $config['host'] . ':' . $config['port'];
 
         parent::__construct($socket_name);
     }

@@ -29,7 +29,7 @@ class GatewayServer extends Gateway
         $this->reloadable      = false;
         $this->registerAddress = $register['host'] . ':' . $register['port'];
 
-        $socket_name = $config['socket_type'] . '://' . $config['host'] . ':' . $config['port'];
+        $socket_name = $config['socketType'] . '://' . $config['host'] . ':' . $config['port'];
 
         parent::__construct($socket_name);
     }

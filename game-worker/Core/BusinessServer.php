@@ -8,13 +8,12 @@
 
 namespace GameWorker\Core;
 
-
-use Apps\Events\BusinessEvent;
 use GatewayWorker\BusinessWorker;
 
 class BusinessServer extends BusinessWorker
 {
     public $myListen = [];
+
     /**
      * GatewayServer constructor.
      * @param array $config
@@ -24,7 +23,7 @@ class BusinessServer extends BusinessWorker
     {
         $this->name            = $config['name'];
         $this->count           = $config['count'];
-        $this->eventHandler    = BusinessEvent::class;
+        $this->eventHandler    = $config['eventHandler'];
         $this->registerAddress = $register['host'] . ':' . $register['port'];
 
         parent::__construct();
