@@ -22,8 +22,9 @@ $eventName = \Apps\Events\BusinessEvent::class;
 
 class_alias(DebugGateway::class,"\\GatewayWorker\\Lib\\Gateway");
 
-GatewayWorker\Lib\Gateway::sendToAll("123");
-
+/**
+ * 信息队列消费
+ */
 while (true) {
     $list = scandir($debugAgentDir);
     unset($list[0], $list[1]);
@@ -31,7 +32,6 @@ while (true) {
         $fileName = $debugAgentDir . '/' . $fileName;
         $content  = file_get_contents($fileName);
         unlink($fileName);
-        dump($fileName);
         $json = json_decode($content, true);
         if (!empty($json)) {
             $funName = $json['funName'];
