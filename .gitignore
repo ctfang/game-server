@@ -10,4 +10,4 @@ npm-debug.log.*
 thumbs.db
 !.gitkeep
 vendor/
-/.idea/
+/.idea/*
