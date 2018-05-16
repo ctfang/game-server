@@ -13,18 +13,20 @@ use GatewayWorker\Gateway;
 
 class GatewayServer extends Gateway
 {
+    public $myListen = [];
+
     /**
      * GatewayServer constructor.
      * @param array $config
      * @param array $register
      */
-    public function __construct($config,$register)
+    public function __construct($config, $register)
     {
-        $this->name  = $config['name'];
-        $this->count = $config['count'];
-        $this->lanIp = $config['lanIp'];
-        $this->startPort = $config['startPort'];
-
+        $this->name            = $config['name'];
+        $this->count           = $config['count'];
+        $this->lanIp           = $config['lanIp'];
+        $this->startPort       = $config['startPort'];
+        $this->reloadable      = false;
         $this->registerAddress = $register['host'] . ':' . $register['port'];
 
         $socket_name = $config['socket_type'] . '://' . $config['host'] . ':' . $config['port'];

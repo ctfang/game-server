@@ -19,10 +19,10 @@ $game->loadServerConfig(__DIR__ . '/config/server.php');
 
 $game->listen(new RegisterServer(Game::config('register')));
 
+$game->listen(new GatewayServer(Game::config('gateway'), Game::config('register')));
+
 $game->listen(new BusinessServer(Game::config('business'), Game::config('register')));
 
-
-$game->listen(new GatewayServer(Game::config('gateway'), Game::config('register')));
 
 //$game->listen(new HttpServer(Game::config('http')));
 

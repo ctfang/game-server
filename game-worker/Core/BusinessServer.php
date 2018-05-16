@@ -14,7 +14,7 @@ use GatewayWorker\BusinessWorker;
 
 class BusinessServer extends BusinessWorker
 {
-    public $listen = [];
+    public $myListen = [];
     /**
      * GatewayServer constructor.
      * @param array $config

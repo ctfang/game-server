@@ -42,10 +42,16 @@ class Game
         self::$container->config = new Config($file);
     }
 
+    /**
+     * 通用注册回调
+     *
+     * @param Worker $worker
+     */
     public function listen(Worker $worker)
     {
-        if( isset($worker->listen) ){
-            foreach ($worker->listen as $func){
+        if( isset($worker->myListen) ){
+            // $worker 自定义的回调函数
+            foreach ($worker->myListen as $func){
                 if( method_exists($worker,$func) ){
                     $worker->{$func} = [$worker,$func];
                 }
