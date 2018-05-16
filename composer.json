@@ -1,0 +1,29 @@
+{
+  "name": "ctfang/game-server",
+  "authors": [
+    {
+      "name": "明月有色",
+      "email": "2206582181@qq.com"
+    }
+  ],
+  "autoload":{
+    "psr-4": {
+      "Apps\\":"apps/",
+      "GameWorker\\":"game-worker/"
+    }
+  },
+  "require": {
+    "vlucas/phpdotenv": "^2.4",
+    "symfony/var-dumper": "^3.3",
+    "symfony/console": "~3",
+    "nikic/fast-route": "^1.2",
+    "monolog/monolog": "~1.12",
+    "filp/whoops": "^2.1.4",
+    "psr/log": "^1.0.0",
+    "workerman/workerman": "^3.5",
+    "doctrine/annotations": "^1.6",
+    "hassankhan/config": "^1.0",
+    "workerman/gatewayclient": "^3.0",
+    "workerman/gateway-worker": "^3.0"
+  }
+}
