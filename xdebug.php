@@ -9,22 +9,26 @@
 use GameWorker\Game;
 use GameWorker\Support\DebugGateway;
 
-require './vendor/autoload.php';
-require './game-worker/Helper/Functions.php';
+/**
+ * 公用加载
+ * @var Game $game
+ */
+$game = include __DIR__ . '/game-worker/autoload.php';
 
-$game = new Game(__DIR__);
-$game->loadServerConfig(__DIR__ . '/config');
-
+// 队列信息存储目录
 $debugAgentDir = Game::config('debugPushDir');
-$debugAgentDir = str_replace('/', '\\', $debugAgentDir);
 if (!is_dir($debugAgentDir)) mkdir($debugAgentDir, 0755, true);
+
+// 生成环境的 BusinessEvent
 $eventName = \Apps\Events\BusinessEvent::class;
 
-class_alias(DebugGateway::class,"\\GatewayWorker\\Lib\\Gateway");
+// Gateway 重定向信息
+class_alias(DebugGateway::class, "\\GatewayWorker\\Lib\\Gateway");
 
-/**
- * 信息队列消费
- */
+// 队列间隔
+$time_interval = Game::config('time_interval', 500000);
+
+// 信息队列消费
 while (true) {
     $list = scandir($debugAgentDir);
     unset($list[0], $list[1]);
@@ -36,9 +40,9 @@ while (true) {
         if (!empty($json)) {
             $funName = $json['funName'];
             $params  = $json['params'];
-            call_user_func_array($eventName.'::'.$funName, $params);
+            call_user_func_array($eventName . '::' . $funName, $params);
         }
     }
     //延迟 0.5s
-    usleep(500000);
+    usleep($time_interval);
 }

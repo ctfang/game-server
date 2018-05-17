@@ -7,11 +7,11 @@ use GameWorker\Core\HttpServer;
 use GameWorker\Core\RegisterServer;
 use GameWorker\Game;
 
-require './vendor/autoload.php';
-require './game-worker/Helper/Functions.php';
-
-$game = new Game(__DIR__);
-$game->loadServerConfig(__DIR__ . '/config');
+/**
+ * 公用加载
+ * @var Game $game
+ */
+$game = include __DIR__.'/game-worker/autoload.php';
 
 try {
     $game->listen(new RegisterServer(Game::config('register')));
@@ -24,7 +24,7 @@ try {
 
     $game->run();
 } catch (\Exception $exception) {
-    // 调试下，打印错误
+    // 打印错误
     echo "\n",$exception->getMessage(),
     " in ",
     $exception->getFile(),

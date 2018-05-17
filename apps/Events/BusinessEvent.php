@@ -34,8 +34,9 @@ class BusinessEvent extends WorkerEvent
      */
     public static function onMessage(string $clientId, $message)
     {
+        // 可以在这里测试断点 1
         $test = time();
-
+        // 可以在这里测试断点 2
         $test++;
         $test++;
         $test++;
@@ -43,7 +44,7 @@ class BusinessEvent extends WorkerEvent
         $test++;
         $test++;
 
-
+        // 向客户端发送信息
         Gateway::sendToAll("{$clientId} said $message");
     }
 
