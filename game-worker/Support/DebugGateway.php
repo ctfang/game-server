@@ -26,7 +26,6 @@ class DebugGateway
     public static function saveFile($funName, $params)
     {
         $debugAgentDir = Game::config('debugPullDir');
-        $debugAgentDir = str_replace('/', '\\', $debugAgentDir);
         if (!is_dir($debugAgentDir)) mkdir($debugAgentDir, 0755, true);
         file_put_contents($debugAgentDir . '/' . time() . '_' . uniqid() . '.txt', json_encode([
             'funName' => $funName,

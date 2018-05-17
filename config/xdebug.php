@@ -19,6 +19,6 @@ return [
      */
     'debugPullDir'=>dirname(__DIR__).'/runtime/debug/pull',
 
-
-    '$time_interval'=>1,
+    // 信息读取 0.1秒
+    'time_interval'=>100000,
 ];

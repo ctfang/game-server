@@ -20,7 +20,9 @@ class DebugEvent extends WorkerEvent
     {
         $debugAgentDir = Game::config('debugPullDir');
         if (!is_dir($debugAgentDir)) mkdir($debugAgentDir, 0755, true);
-        Timer::add(0.1,function ()use($debugAgentDir){
+        // 队列间隔
+        $time_interval = Game::config('time_interval', 500000);
+        Timer::add($time_interval,function ()use($debugAgentDir){
             $list = scandir($debugAgentDir);
             unset($list[0], $list[1]);
             foreach ($list as $fileName) {
