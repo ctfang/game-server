@@ -8,7 +8,12 @@
 
 return [
     /**
-     * DebugEvent 拦截信息，并保存文件
+     * 是否开启拦截信息，并推入debug
+     */
+    'xdebug' =>env('XDEBUG_STATUS',false),
+
+    /**
+     * HttpDebugEvent 拦截信息，并保存文件
      * xdebug.php文件消费这个目录的文件
      */
     'debugPushDir'=>dirname(__DIR__).'/runtime/debug/push',

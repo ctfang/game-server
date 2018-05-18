@@ -9,30 +9,41 @@
 namespace GameWorker\Support;
 
 
+use Workerman\Connection\TcpConnection;
+use Workerman\Worker;
+
 abstract class WorkerEvent
 {
     /**
-     * 连接事件
+     * 进程启动
      *
-     * @param string $clientId 客户端连接id
+     * @param Worker $worker
      * @return mixed
      */
-    abstract public static function onConnect(string $clientId);
+    abstract public function onWorkerStart(Worker $worker);
+
+    /**
+     * 连接事件
+     *
+     * @param TcpConnection $connection 客户端连接
+     * @return mixed
+     */
+    abstract public function onConnect(TcpConnection $connection);
 
     /**
      * 接收信息
      *
-     * @param string $clientId
+     * @param TcpConnection $connection
      * @param string|array $message
      * @return mixed
      */
-    abstract public static function onMessage(string $clientId, $message);
+    abstract public function onMessage(TcpConnection $connection, $message);
 
     /**
      * 客户端断开触发
      *
-     * @param string $clientId
+     * @param TcpConnection $connection
      * @return mixed
      */
-    abstract public static function onClose(string $clientId);
+    abstract public function onClose(TcpConnection $connection);
 }

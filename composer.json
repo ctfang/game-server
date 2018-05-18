@@ -24,6 +24,7 @@
     "doctrine/annotations": "^1.6",
     "hassankhan/config": "^1.0",
     "workerman/gatewayclient": "^3.0",
-    "workerman/gateway-worker": "^3.0"
+    "workerman/gateway-worker": "^3.0",
+    "psr/http-message": "^1.0"
   }
 }

@@ -22,6 +22,8 @@ class Game
     /** @var Config */
     public $config;
 
+    private $serverList = [];
+
     private $listen = [
         'onConnect',
         'onMessage',
@@ -34,15 +36,21 @@ class Game
 
     public function __construct($rootPath)
     {
-        self::$container = $this;
+        self::$container           = $this;
         self::$container->rootPath = $rootPath;
-        if( file_exists($rootPath.'/.env') ){
+        if (file_exists($rootPath . '/.env')) {
             $dotenv = new Dotenv($rootPath);
             $dotenv->load();
         }
+
+        Worker::$pidFile = dirname(__DIR__) . '/runtime/workerman.pid';
+        Worker::$logFile = dirname(__DIR__) . '/runtime/workerman.log';
     }
 
-    // 加载配置
+    /**
+     * @param string $dir
+     * @throws \Noodlehaus\Exception\EmptyDirectoryException
+     */
     public function loadServerConfig($dir)
     {
         self::$container->config = new Config($dir);
@@ -55,18 +63,25 @@ class Game
      */
     public function listen(Worker $worker)
     {
-        if( isset($worker->myListen) ){
+        if (isset($worker->eventHandler) && $worker->eventHandler) {
+            $this->serverList[$worker->name] = $worker->eventHandler;
+            $event                           = $worker->eventHandler;
+            $event                           = new $event();
+        } else {
+            $this->serverList[$worker->name] = get_class($worker);
+            $event                           = $worker;
+        }
+
+        if (isset($worker->myListen)) {
             // $worker 自定义的回调函数
-            foreach ($worker->myListen as $func){
-                if( method_exists($worker,$func) ){
-                    $worker->{$func} = [$worker,$func];
-                }
-            }
-        }else{
-            foreach ($this->listen as $func){
-                if( method_exists($worker,$func) ){
-                    $worker->{$func} = [$worker,$func];
-                }
+            $listen = $worker->myListen;
+        } else {
+            $listen = $this->listen;
+        }
+
+        foreach ($listen as $func) {
+            if (method_exists($event, $func)) {
+                $worker->{$func} = [$event, $func];
             }
         }
     }
@@ -89,5 +104,16 @@ class Game
     public static function config($key, $default = null)
     {
         return self::$container->config->get($key, $default);
+    }
+
+    /**
+     * 获取绝对路径
+     *
+     * @param string $dir
+     * @return string
+     */
+    public static function getRoot(string $dir)
+    {
+        return dirname(__DIR__) . $dir;
     }
 }

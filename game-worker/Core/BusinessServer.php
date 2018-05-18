@@ -8,6 +8,8 @@
 
 namespace GameWorker\Core;
 
+use GameWorker\Game;
+use GameWorker\Support\Events\HttpDebugEvent;
 use GatewayWorker\BusinessWorker;
 
 class BusinessServer extends BusinessWorker
@@ -23,8 +25,13 @@ class BusinessServer extends BusinessWorker
     {
         $this->name            = $config['name'];
         $this->count           = $config['count'];
-        $this->eventHandler    = $config['eventHandler'];
         $this->registerAddress = $register['host'] . ':' . $register['port'];
+
+        if( Game::config('xdebug',false) ){
+            $this->eventHandler    = HttpDebugEvent::class;
+        }else{
+            $this->eventHandler    = $config['eventHandler'];
+        }
 
         parent::__construct();
     }

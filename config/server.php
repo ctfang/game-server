@@ -1,40 +1,46 @@
 <?php
 
 return [
-    'http'     => [
-        'name'        => 'api',
+    // 只提供api的web服务
+    'api'      => [
+        'name'       => 'api',
         'socketType' => 'http',
-        'host'        => env('HTTP_HOST', '0.0.0.0'),
-        'port'        => env('HTTP_PORT', 88),
-        'count'       => env('HTTP_COUNT', 1),
+        'host'       => env('API_HOST', '0.0.0.0'),
+        'port'       => env('API_PORT', 88),
+        'count'      => env('API_COUNT', 1),
+    ],
+    // 提供静态文件的web服务
+    'web'      => [
+        'name'       => 'api',
+        'socketType' => 'http',
+        'host'       => env('WEB_HOST', '0.0.0.0'),
+        'port'       => env('WEB_PORT', 89),
+        'count'      => env('WEB_COUNT', 1),
+        'root'       => [
+            'www.example.me' => dirname(__DIR__).'/public',
+        ],
     ],
     // gateway ws 连接端口
     'gateway'  => [
-        'name'        => 'ws',
+        'name'       => 'ws',
         'socketType' => 'WebSocket',
-        'lanIp'       => env('Gateway_LanIp', '0.0.0.0'),
-        'startPort'   => env('Gateway_StartPort', '9010'),
-        'host'        => env('Gateway_HOST', '0.0.0.0'),
-        'port'        => env('Gateway_PORT', 9003),
-        'count'       => env('Gateway_COUNT', 1),
+        'lanIp'      => env('GATEWAY_LANIP', '0.0.0.0'),
+        'startPort'  => env('GATEWAY_STARTPORT', '9010'),
+        'host'       => env('GATEWAY_HOST', '0.0.0.0'),
+        'port'       => env('GATEWAY_PORT', 9003),
+        'count'      => env('GATEWAY_COUNT', 1),
     ],
-    // gateway 集群管理
+    // register 集群管理
     'register' => [
-        'name'        => 'register',
+        'name'       => 'register',
         'socketType' => 'text',
-        'host'        => env('REGISTER_HOST', '0.0.0.0'),
-        'port'        => env('REGISTER_PORT', 9004),
+        'host'       => env('REGISTER_HOST', '0.0.0.0'),
+        'port'       => env('REGISTER_PORT', 9004),
     ],
     // gateway 业务处理
     'business' => [
         'name'         => 'business',
         'count'        => env('BUSINESS_COUNT', 1),
-        'eventHandler' => env('BUSINESS_EVENT', \Apps\Events\BusinessEvent::class),
-    ],
-
-    'task' => [
-        'host'  => env('HTTP_HOST', '0.0.0.0'),
-        'port'  => env('HTTP_PORT', 81),
-        'count' => env('WS_COUNT', 1),
+        'eventHandler' => \Apps\Events\BusinessEvent::class,
     ],
 ];
