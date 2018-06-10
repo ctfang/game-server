@@ -11,6 +11,8 @@ namespace GameWorker\Core;
 
 use GameWorker\Game;
 use GameWorker\Support\DebugGateway;
+use GameWorker\Support\Http\DebugResponse;
+use GameWorker\Support\Http\Response;
 use GameWorker\Support\QueueServer;
 use GameWorker\Support\WorkerEvent;
 
@@ -27,6 +29,9 @@ class XDebugServer
         if (!is_dir($debugAgentDir)) mkdir($debugAgentDir, 0755, true);
 
         $this->queue = new QueueServer($debugAgentDir);
+
+        class_alias(DebugGateway::class,"\\GatewayWorker\\Lib\\Gateway");
+        class_alias(DebugResponse::class,"\\GameWorker\\Support\\Http");
     }
 
     /**
@@ -47,11 +52,11 @@ class XDebugServer
     {
         while (true) {
             $workerParams = $this->queue->pull();
-            if( !$workerParams ){
+            if (!$workerParams) {
                 continue;
             }
 
-            $this->listen($this->eventList[$workerParams->name],$workerParams->onFunction,$workerParams->params);
+            $this->listen($this->eventList[$workerParams->name], $workerParams->onFunction, $workerParams->params);
 
             usleep(10000);
         }
@@ -59,7 +64,7 @@ class XDebugServer
 
     private function listen(WorkerEvent $event, string $onFuncName, $params)
     {
-        call_user_func_array($event . '::' . $onFuncName, $params);
+        call_user_func_array([$event, $onFuncName], $params);
     }
 
     /**

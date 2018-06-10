@@ -60,6 +60,7 @@ class RequestMapping
         if (isset($values['method'])) {
             $method = $values['method'];
             $this->method = (array)$method;
+            $this->method = array_change_key_case($this->method,CASE_UPPER);
         }
 
         if (isset($values['params'])) {

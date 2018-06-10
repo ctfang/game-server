@@ -8,9 +8,11 @@
 
 namespace Apps\Controllers\Admin;
 
+use GameWorker\Annotation\Controller;
+
 /**
  * Class IndexController
- * @Controller('/admin')
+ * @Controller(prefix="/admin")
  * @package Apps\Controllers
  */
 class LoginController

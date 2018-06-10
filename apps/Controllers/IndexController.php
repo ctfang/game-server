@@ -8,15 +8,21 @@
 
 namespace Apps\Controllers;
 
+use GameWorker\Annotation\Controller;
+use GameWorker\Annotation\RequestMapping;
+
 /**
  * Class IndexController
- * @Controller('/')
+ * @Controller("/")
  * @package Apps\Controllers
  */
 class IndexController
 {
+    /**
+     * @RequestMapping("index")
+     */
     public function index()
     {
-
+        return time();
     }
 }

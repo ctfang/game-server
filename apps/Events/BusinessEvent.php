@@ -11,7 +11,7 @@ namespace Apps\Events;
 use GameWorker\Support\WorkerEvent;
 use \GatewayWorker\Lib\Gateway;
 
-class BusinessEvent extends WorkerEvent
+class BusinessEvent
 {
     /**
      * 连接事件

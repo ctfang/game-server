@@ -10,6 +10,9 @@ namespace GameWorker\Support\Events;
 
 
 use GameWorker\Game;
+use GameWorker\Services\DispatcherService;
+use GameWorker\Support\Http\Request;
+use GameWorker\Support\Http\Response;
 use GameWorker\Support\LoadRouteAnnotations;
 use GameWorker\Support\WorkerEvent;
 use Workerman\Connection\TcpConnection;
@@ -18,14 +21,23 @@ use Workerman\Worker;
 class ApiEvent extends WorkerEvent
 {
     /**
+     * @var DispatcherService
+     */
+    protected $dispatcher;
+
+    /**
      * 进程启动
      *
      * @param Worker $worker
      * @return mixed
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \ReflectionException
      */
     public function onWorkerStart(Worker $worker)
     {
         $route = (new LoadRouteAnnotations())->load(Game::getRoot('/apps/Controllers'));
+        $this->dispatcher = new DispatcherService();
+        $this->dispatcher->setDispatcher($route);
     }
 
     /**
@@ -48,7 +60,10 @@ class ApiEvent extends WorkerEvent
      */
     public function onMessage(TcpConnection $connection, $message)
     {
-        $connection->send("OK");
+        $psr7Request = Request::loadFromWorkerManRequest($message);
+        $psr7Response = new Response($connection);
+
+        $this->dispatcher->dispatch($psr7Request, $psr7Response);
     }
 
     /**
