@@ -10,17 +10,30 @@ namespace Apps\Events;
 
 
 use GameWorker\Support\WorkerEvent;
+use Workerman\Connection\TcpConnection;
+use Workerman\Worker;
 
 class ApiEvent extends WorkerEvent
 {
 
     /**
-     * 连接事件
+     * 进程启动
      *
-     * @param string $clientId 客户端连接id
+     * @param Worker $worker
      * @return mixed
      */
-    public static function onConnect(string $clientId)
+    public function onWorkerStart(Worker $worker)
+    {
+        // TODO: Implement onWorkerStart() method.
+    }
+
+    /**
+     * 连接事件
+     *
+     * @param TcpConnection $connection 客户端连接
+     * @return mixed
+     */
+    public function onConnect(TcpConnection $connection)
     {
         // TODO: Implement onConnect() method.
     }
@@ -28,11 +41,11 @@ class ApiEvent extends WorkerEvent
     /**
      * 接收信息
      *
-     * @param string $clientId
+     * @param TcpConnection $connection
      * @param string|array $message
      * @return mixed
      */
-    public static function onMessage(string $clientId, $message)
+    public function onMessage(TcpConnection $connection, $message)
     {
         // TODO: Implement onMessage() method.
     }
@@ -40,10 +53,10 @@ class ApiEvent extends WorkerEvent
     /**
      * 客户端断开触发
      *
-     * @param string $clientId
+     * @param TcpConnection $connection
      * @return mixed
      */
-    public static function onClose(string $clientId)
+    public function onClose(TcpConnection $connection)
     {
         // TODO: Implement onClose() method.
     }

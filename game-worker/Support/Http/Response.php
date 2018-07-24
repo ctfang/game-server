@@ -8,25 +8,20 @@
 
 namespace GameWorker\Support\Http;
 
-
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
-use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http;
 
 class Response implements ResponseInterface
 {
     use ResponseTail;
 
+    public $statusCode = '';
+    public $reasonPhrase = '';
+
     public function send()
     {
-        $response = $this;
-
-        /**
-         * Headers
-         */
         // Write Headers to swoole response
-        foreach ($response->getHeaders() as $key => $value) {
+        foreach ($this->getHeaders() as $key => $value) {
             $this->header($key, implode(';', $value));
         }
 
@@ -37,7 +32,7 @@ class Response implements ResponseInterface
             foreach ($paths ?? [] as $path => $item) {
                 foreach ($item ?? [] as $name => $cookie) {
                     if ($cookie instanceof Cookie) {
-                        $this->setCookie($cookie->getName(), $cookie->getValue() ? : 1, $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
+                        $this->setCookie($cookie->getName(), $cookie->getValue() ?: 1, $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
                     }
                 }
             }
@@ -46,11 +41,10 @@ class Response implements ResponseInterface
         /**
          * Status code
          */
-        $this->withStatus($response->getStatusCode());
-
+        Http::header($this->getReasonPhrase(), true, $this->getStatusCode());
         /**
          * Body
          */
-        $this->connect->send($response->getBody()->getContents());
+        $this->connect->send($this->getBody()->getContents());
     }
 }

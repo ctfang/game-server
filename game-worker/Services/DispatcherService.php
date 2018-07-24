@@ -38,19 +38,24 @@ class DispatcherService
     {
         $routeInfo = $this->dispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
 
-        $this->{$this->bindRouteInfo[$routeInfo[0]]}($request, $response, $routeInfo[1]??[]);
+        return $this->{$this->bindRouteInfo[$routeInfo[0]]}($request, $response, $routeInfo[1]??[]);
     }
 
     public function notFound(Request $request, Response $response)
     {
-        $response->withStatus(404);
+        $response = $response->withStatus(404);
+
         $response->send();
+
+        return $response;
     }
 
     public function methodNotAllowed(Request $request, Response $response)
     {
         $response->withStatus(501);
         $response->send();
+
+        return $response;
     }
 
     public function found(Request $request, Response $response, array $routeInfo)
@@ -61,5 +66,7 @@ class DispatcherService
 
         $response->withBody(new BodyStream($content));
         $response->send();
+
+        return $response;
     }
 }

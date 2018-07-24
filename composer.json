@@ -25,6 +25,7 @@
     "hassankhan/config": "^1.0",
     "workerman/gatewayclient": "^3.0",
     "workerman/gateway-worker": "^3.0",
-    "psr/http-message": "^1.0"
+    "psr/http-message": "^1.0",
+    "react/socket": "^1.0"
   }
 }

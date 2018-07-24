@@ -401,12 +401,16 @@ trait ResponseTail
      * immutability of the message, and MUST return an instance that has the
      * updated status and reason phrase.
      *
+     * 此方法在实现的时候，**必须** 保留原有的不可修改的 HTTP 消息实例，然后返回
+     * 一个新的修改过的 HTTP 消息实例。
+     *
      * @link http://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @param int $code The 3-digit integer result code to set.
      * @param string $reasonPhrase The reason phrase to use with the
      *     provided status code; if none is provided, implementations MAY
      *     use the defaults as suggested in the HTTP specification.
+     *     默认使用http默认提示语
      * @return static
      * @throws \InvalidArgumentException For invalid status code arguments.
      */

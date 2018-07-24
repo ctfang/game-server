@@ -9,6 +9,7 @@
 namespace GameWorker\Core;
 
 
+use GameWorker\Core\XDebug\DebugApiEvent;
 use GameWorker\Game;
 use GameWorker\Support\Events\ApiEvent;
 use GameWorker\Support\Events\HttpDebugEvent;
@@ -25,11 +26,12 @@ class ApiServer extends Worker
         $this->count = $config['count'];
         $socket_name = $config['socketType'] . '://' . $config['host'] . ':' . $config['port'];
 
-        if (Game::config('xdebug', false)) {
-            $this->eventHandler = HttpDebugEvent::class;
-        } else {
+        if( Game::config('xdebug',false) && !defined('IS_XDEBUG') ){
+            $this->eventHandler    = DebugApiEvent::class;
+        }else{
             $this->eventHandler = ApiEvent::class;
         }
+
         parent::__construct($socket_name);
     }
 }

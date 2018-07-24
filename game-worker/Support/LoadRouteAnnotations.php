@@ -57,7 +57,7 @@ class LoadRouteAnnotations
                 if (!isset($pathInfo['filename'])) {
                     continue;
                 }
-                $namespace = strstr($pathInfo['dirname'], 'Controllers');
+                $namespace = strstr($pathInfo['dirname'], 'Http');
                 $namespace = str_replace('/', '\\', $namespace);
                 $this->registerLoaderAndScanRoute("\\Apps\\" . $namespace . '\\' . $pathInfo['filename'], $route);
             }

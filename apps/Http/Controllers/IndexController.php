@@ -6,7 +6,7 @@
  * Time: 21:22
  */
 
-namespace Apps\Controllers;
+namespace Apps\Http\Controllers;
 
 use GameWorker\Annotation\Controller;
 use GameWorker\Annotation\RequestMapping;
@@ -23,6 +23,7 @@ class IndexController
      */
     public function index()
     {
+        dump("OK");
         return time();
     }
 }

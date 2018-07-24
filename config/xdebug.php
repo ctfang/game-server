@@ -10,7 +10,7 @@ return [
     /**
      * 是否开启拦截信息，并推入debug
      */
-    'xdebug' =>env('XDEBUG_STATUS',false),
+    'xdebug' =>env('DEBUG',false),
 
     /**
      * HttpDebugEvent 拦截信息，并保存文件

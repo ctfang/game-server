@@ -20,6 +20,8 @@ use Workerman\Worker;
 
 class ApiEvent extends WorkerEvent
 {
+    public $name = 'api_worker';
+
     /**
      * @var DispatcherService
      */
@@ -35,7 +37,8 @@ class ApiEvent extends WorkerEvent
      */
     public function onWorkerStart(Worker $worker)
     {
-        $route = (new LoadRouteAnnotations())->load(Game::getRoot('/apps/Controllers'));
+        $route = (new LoadRouteAnnotations())->load(Game::getRoot('/apps/Http/Controllers'));
+
         $this->dispatcher = new DispatcherService();
         $this->dispatcher->setDispatcher($route);
     }
@@ -63,7 +66,7 @@ class ApiEvent extends WorkerEvent
         $psr7Request = Request::loadFromWorkerManRequest($message);
         $psr7Response = new Response($connection);
 
-        $this->dispatcher->dispatch($psr7Request, $psr7Response);
+        return $this->dispatcher->dispatch($psr7Request, $psr7Response);
     }
 
     /**
